@@ -33,7 +33,7 @@ App
 }
 
 .content {
-  padding: 20px;
+  padding: 10px 15px;
 }
 
 /*************
@@ -53,7 +53,7 @@ Navigation bar
 
 .navbar li a {
     display: block;
-    color: white;
+    color: #eee;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -64,6 +64,56 @@ Navigation bar
 }
 
 .navbar a.active {
-  background-color: #17b;
+  background-color: #222;
 }
 
+/***
+Home
+***/
+select {
+  border: none;
+  border-bottom: 1px solid #222;
+  padding: 5px;
+  margin: 10px 0 25px 0;
+  font-size: large;
+}
+select:hover,
+select:active,
+select:focus {
+  outline: none;
+  border-color: #17b;
+  cursor: pointer;
+}
+input[type="text"] {
+  border: 1px solid #222;
+  border-radius: 2px;
+  padding: 5px;
+  margin:5px;
+  font-size: large;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+input[type="text"]:hover,
+input[type="text"]:active,
+input[type="text"]:focus {
+  outline: none;
+  border-color: #17b;
+}
+
+button {
+  border: 1px solid #17b;
+  border-radius: 2px;
+  background-color: #17b; 
+  color: #eee;
+  font-size: large;
+  padding: 5px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+button:hover,
+button:focus,
+button:active {
+  outline: none;
+  background-color: #18c;
+}

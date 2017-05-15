@@ -6,7 +6,7 @@ import Home from './components/Home';
 import About from './components/About';
 import './index.css';
 
-import { BrowserRouter, Match } from 'react-router'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 // http://frontend.turing.io/lessons/react-router-4.html
 
@@ -14,8 +14,8 @@ const Root = () => {
   return (
     <BrowserRouter>
       <MainLayout>
-        <Match exactly pattern="/" component={Home} />
-        <Match exactly pattern="/about" component={About} />
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
       </MainLayout>
     </BrowserRouter>
   )

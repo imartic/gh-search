@@ -9,7 +9,7 @@ const Home = () => {
           <h2>GitHub Search</h2>
         </div>
         <p className="App-intro">
-          Search for GitHub&nbsp;
+          Search for GitHub
           <select>
             <option value="users">Users</option>
             <option value="repos">Repos</option>
