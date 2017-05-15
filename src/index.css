@@ -87,7 +87,7 @@ select:focus {
 input[type="text"] {
   border: 1px solid #222;
   border-radius: 2px;
-  padding: 5px;
+  padding: 7px;
   margin:5px;
   font-size: large;
   -webkit-transition: all 0.2s;
@@ -104,9 +104,9 @@ button {
   border: 1px solid #17b;
   border-radius: 2px;
   background-color: #17b; 
-  color: #eee;
+  color: #fff;
   font-size: large;
-  padding: 5px;
+  padding: 7px;
   cursor: pointer;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
