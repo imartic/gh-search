@@ -2,17 +2,24 @@ import React from 'react';
 import logo from '../logo.svg';
 import * as userApi from '../api/UserApi';
 import * as repoApi from '../api/RepoApi';
-import SearchLayout from './layouts/SearchLayout';
+import User from './User';
+import Repo from './Repo';
+
+const initialState = {
+    login: '',
+    name: '',
+    html_url: '',
+    repos: []
+}
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            login: '',
-            name: '',
-            html_url: '',
-            repos: []
-        }
+        this.state = initialState;
+    }
+
+    resetStates () {
+        return this.setState(initialState);
     }
 
     search() {
@@ -23,11 +30,15 @@ class Home extends React.Component {
             userApi.getUser(query).then(result => {
                 profile = result.profile;
                 console.log(profile);
-                this.setState({login: profile.login});
-                this.setState({name: profile.name});
-                this.setState({html_url: profile.html_url});
-                /*this.setState({repos: result.repos});
-                console.log(this.state.repos);*/
+                this.setState({
+                    login: profile.login,
+                    name: profile.name,
+                    html_url: profile.html_url
+                    //repos: result.repos
+                });
+            }).catch(error => {
+                this.resetStates();
+                this.refs.query.value = '';
             });
         } else if (this.refs.searchType.value === 'repos') {
             repoApi.getRepos(query);
@@ -35,6 +46,15 @@ class Home extends React.Component {
     }
 
     render() {
+        const isUser = (this.state.login.value !== '');
+
+        let searchResult = null;
+        if (isUser) {
+            searchResult = <User {...this.state} />;
+        } else {
+            searchResult = <Repo {...this.state.repo} />;
+        }
+
         return (
             <div className="App">
                 <div className="App-header">
@@ -53,8 +73,11 @@ class Home extends React.Component {
                     <input ref="query" type="text" placeholder="Enter search terms..."></input>
                     <button onClick={this.search.bind(this)}>Search</button>
                 </div>
+                
+                {/*for test - remove*/}
+                <p>Login: {this.state.login}</p>
 
-                <SearchLayout {...this.state} />
+                {searchResult}
             </div>
         );
     }

@@ -1,62 +1,31 @@
 import axios from 'axios';
 
-/**
- * Get users
- */
-
+/********
+Get users
+********/
 export function getUser(user) {
   let profile = {};
 
   return Promise.all([
     axios.get('https://api.github.com/users/' + user),
     axios.get('https://api.github.com/users/' + user + '/repos')
-    ]).then(response => {    
-        let gh = response[0].data;
-        let repos = response[1].data;
-
-        profile.profile = gh;
-        profile.repos = repos;
-    
-        return profile;
+    ])
+    .catch(error => {
+      console.log("userApi: getUser: Error - ", error)
+      if (error.response) {
+        if(error.response.status === 404){
+          alert("No matching user!");
+        }
+      }
+      else{
+        alert("Error on fetching data from GitHub!");
+      }
+      return error;
+    })
+    .then(response => {
+      profile.profile = response[0].data;
+      profile.repos = response[1].data;
+      return profile;
     }
   );
-}
-
-/**
- * getProfile() is much more complex because it has to make
- * three XHR requests to get all the profile info.
- */
-
-export function getProfile(userId) {
-
-  // Start with an empty profile object and build it up
-  // from multiple XHR requests.
-  let profile = {};
-
-  // Get the user data from our local database.
-  return axios.get('' + userId)
-    .then(response => {
-
-      let user = response.data;
-      profile.name = user.name;
-      profile.twitter = user.twitter;
-      profile.worksOn = user.worksOn;
-
-      // Then use the github attribute from the previous request to
-      // sent two XHR requests to GitHub's API. The first for their
-      // general user info, and the second for their repos.
-      return Promise.all([
-        axios.get('https://api.github.com/users/' + user.github),
-        axios.get('https://api.github.com/users/' + user.github + '/repos')
-      ]).then(results => {
-
-        let githubProfile = results[0].data;
-        let githubRepos = results[1].data;
-
-        profile.imageUrl = githubProfile.avatar_url;
-        profile.repos = githubRepos;
-
-        return profile;
-      });
-    });
 }

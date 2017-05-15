@@ -8,7 +8,6 @@ export default function(props) {
             <h2>{props.name}</h2>
             <p>{props.login}</p>
         </a>
-        <p>{props.repos}</p>
       </div>
       <div className="search-result">
         <ul>
