@@ -5,7 +5,7 @@ import * as repoApi from '../api/RepoApi';
 import User from './User';
 import Repo from './Repo';
 
-class Home extends React.Component {
+class Home extends React.PureComponent {
     initialState = {
         login: '',
         name: '',
@@ -18,6 +18,14 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = this.initialState;
+
+        // pre-binding functions
+        this.bindFunctions.call(this, ['search', 'handleKeyPress']);
+    }
+
+    // helper function for pre-binding
+    bindFunctions(functions) {
+        functions.forEach(f => this[f] = this[f].bind(this));
     }
 
     // set states to initial state
@@ -100,9 +108,9 @@ class Home extends React.Component {
                 <div>
                     <input autoFocus ref="query" type="text" 
                         placeholder="Enter search term..."
-                        onKeyPress={this.handleKeyPress.bind(this)}>
+                        onKeyPress={this.handleKeyPress}>
                     </input>
-                    <button onClick={this.search.bind(this)}>Search</button>
+                    <button onClick={this.search}>Search</button>
                 </div>
                 
                 {/*for test - remove later*/}
