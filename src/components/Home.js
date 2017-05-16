@@ -5,24 +5,24 @@ import * as repoApi from '../api/RepoApi';
 import User from './User';
 import Repo from './Repo';
 
-const initialState = {
-    login: '',
-    name: '',
-    img_url: '',
-    html_url: '',
-    repos: [],
-    repoList: []
-}
-
 class Home extends React.Component {
+    initialState = {
+        login: '',
+        name: '',
+        img_url: '',
+        html_url: '',
+        repos: [],
+        repoList: []
+    }
+
     constructor(props) {
         super(props);
-        this.state = initialState;
+        this.state = this.initialState;
     }
 
     // set states to initial state
     resetStates () {
-        return this.setState(initialState);
+        return this.setState(this.initialState);
     }
 
     // start search on enter key pressed
