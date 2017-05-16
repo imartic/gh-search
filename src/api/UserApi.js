@@ -12,10 +12,8 @@ export function getUser(user) {
     ])
     .catch(error => {
       console.log("userApi: getUser: Error - ", error)
-      if (error.response) {
-        if(error.response.status === 404){
-          alert("No matching user!");
-        }
+      if (error.response && (error.response.status === 404)) {
+        alert("No matching user!");
       }
       else{
         alert("Error on fetching data from GitHub!");

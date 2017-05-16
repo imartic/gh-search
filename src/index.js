@@ -1,10 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom'
 
+import './styles/index.css';
+
 import MainLayout from './components/layouts/MainLayout';
 import Home from './components/Home';
 import About from './components/About';
-import './index.css';
 
 import { BrowserRouter, Route } from 'react-router-dom'
 

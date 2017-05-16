@@ -8,8 +8,10 @@ import Repo from './Repo';
 const initialState = {
     login: '',
     name: '',
+    img_url: '',
     html_url: '',
-    repos: []
+    repos: [],
+    repoList: []
 }
 
 class Home extends React.Component {
@@ -18,42 +20,68 @@ class Home extends React.Component {
         this.state = initialState;
     }
 
+    // set states to initial state
     resetStates () {
         return this.setState(initialState);
     }
 
+    // start search on enter key pressed
+    handleKeyPress(target) {
+        if(target.charCode === 13){
+            this.search();    
+        }
+    }
+
+    // calling userApi to search for a user
+    searchUser(query) {
+        let profile = {};  
+
+        userApi.getUser(query).then(result => {
+            this.resetStates();
+            profile = result.profile;          
+            this.setState({
+                login: profile.login,
+                name: profile.name,
+                img_url: profile.avatar_url /*+ '&s=100'*/,
+                html_url: profile.html_url,
+                repos: result.repos
+            });
+        }).catch(error => {
+            this.refs.query.value = '';
+        });
+    }
+
+    // calling repoApi to search for a repo
+    searchRepo(query) {
+        repoApi.getRepos(query).then(result => {
+            this.resetStates();
+            this.setState({
+                repoList: result
+            });
+        }).catch(error => {
+            this.refs.query.value = '';
+        });       
+    }
+
+    // check if searching for user or repo
     search() {
         let query = this.refs.query.value;
 
         if (this.refs.searchType.value === 'users') {
-            let profile = Object.assign({}, this.state);
-            userApi.getUser(query).then(result => {
-                profile = result.profile;
-                console.log(profile);
-                this.setState({
-                    login: profile.login,
-                    name: profile.name,
-                    html_url: profile.html_url
-                    //repos: result.repos
-                });
-            }).catch(error => {
-                this.resetStates();
-                this.refs.query.value = '';
-            });
+            this.searchUser(query);
         } else if (this.refs.searchType.value === 'repos') {
-            repoApi.getRepos(query);
+            this.searchRepo(query);
         }
     }
 
     render() {
-        const isUser = (this.state.login.value !== '');
-
+        // if searchtype is users then show user comp, else show repo comp
         let searchResult = null;
-        if (isUser) {
+        if (this.state.login !== '') 
             searchResult = <User {...this.state} />;
-        } else {
-            searchResult = <Repo {...this.state.repo} />;
-        }
+        else if(this.state.repoList.length > 0) 
+            searchResult = <Repo repos={this.state.repoList} />;
+        //----------------------------------------------------------------
 
         return (
             <div className="App">
@@ -70,13 +98,16 @@ class Home extends React.Component {
                 </p>
 
                 <div>
-                    <input ref="query" type="text" placeholder="Enter search terms..."></input>
+                    <input autoFocus ref="query" type="text" 
+                        placeholder="Enter search term..."
+                        onKeyPress={this.handleKeyPress.bind(this)}>
+                    </input>
                     <button onClick={this.search.bind(this)}>Search</button>
                 </div>
                 
-                {/*for test - remove*/}
-                <p>Login: {this.state.login}</p>
-
+                {/*for test - remove later*/}
+                {/*<p>Login: {this.state.login}</p>*/}
+                
                 {searchResult}
             </div>
         );
